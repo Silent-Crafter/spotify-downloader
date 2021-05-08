@@ -146,7 +146,7 @@ def download(folder, title, url):
         'outtmpl': '{}/{}.%(ext)s'.format(folder,title)
     }
 
-    print(ydl_opts['outtmpl'])
+    print('Output file:',ydl_opts['outtmpl'])
 
     with YoutubeDL(ydl_opts) as ydl:
 
@@ -166,14 +166,14 @@ def set_meta(sp, song, filename, folder):
                 filename = filename.replace(disallowedChar, '')
 
     folder = f'{folder}/{filename}.mp3'
-    print(filename)
-    print(os.path.isfile(folder))
+    print('\nFilename:',filename)
+    print('File exists:',os.path.isfile(folder))
 
     maxRetry = 3
 
     while True:
         try:
-            print('Getting metadata.....')
+            print('\nGetting metadata.....')
             primaryArtistId = song['artists'][0]['id']
             rawArtistMeta = sp.artist(primaryArtistId)
 
@@ -196,37 +196,37 @@ def set_meta(sp, song, filename, folder):
 
             print('embedding meta')
             # embed song details
-            # ! we save tags as both ID3 v2.3 and v2.4
-            # ! The simple ID3 tags
+            # we save tags as both ID3 v2.3 and v2.4
+            # The simple ID3 tags
             try:
                 audioFile = EasyID3(folder)
             except:
                 audioFile = EasyID3()
 
-            # ! song name
+            # song name
             audioFile['title'] = songName
             audioFile['titlesort'] = songName
 
-            # ! track number
+            # track number
             audioFile['tracknumber'] = str(trackNumber)
 
-            # ! disc number
+            # disc number
             audioFile['discnumber'] = str(song['disc_number'])
 
-            # ! genres (pretty pointless if you ask me)
-            # ! we only apply the first available genre as ID3 v2.3 doesn't support multiple
-            # ! genres and ~80% of the world PC's run Windows - an OS with no ID3 v2.4 support
+            # genres (pretty pointless if you ask me)
+            # we only apply the first available genre as ID3 v2.3 doesn't support multiple
+            # genres and ~80% of the world PC's run Windows - an OS with no ID3 v2.4 support
             genres = genre
             if len(genres) > 0:
                 audioFile['genre'] = genres[0]
 
-            # ! all involved artists
+            # all involved artists
             audioFile['artist'] = contributingArtists
 
-            # ! album name
+            # album name
             audioFile['album'] = song['album']['name']
 
-            # ! album artist (all of 'em)
+            # album artist (all of 'em)
             albumArtists = []
 
             for artist in song['album']['artists']:
@@ -234,15 +234,15 @@ def set_meta(sp, song, filename, folder):
 
             audioFile['albumartist'] = albumArtists
 
-            # ! album release date (to what ever precision available)
+            # album release date (to what ever precision available)
             audioFile['date'] = song['album']['release_date']
             audioFile['originaldate'] = song['album']['release_date']
 
-            # ! save as both ID3 v2.3 & v2.4 as v2.3 isn't fully features and
-            # ! windows doesn't support v2.4 until later versions of Win10
+            # save as both ID3 v2.3 & v2.4 as v2.3 isn't fully features and
+            # windows doesn't support v2.4 until later versions of Win10
             audioFile.save(folder,v2_version=3)
 
-            # ! setting the album art
+            # setting the album art
             audioFile = ID3(folder)
             rawAlbumArt = urlopen(song['album']['images'][0]['url']).read()
             audioFile['APIC'] = AlbumCover(
