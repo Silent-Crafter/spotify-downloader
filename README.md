@@ -2,8 +2,7 @@
  downloads songs from spotify through youtube along with adding meta
 
 ## Setup
-Run the setup.py to install missing modules
-after running main.py the program will install a chromium package if not present. it will do this only once. it won't downloader later when you run it. It is required by the requests_html package to simulate a html session, in simpler words, to browse the internet.
+Run the setup.py to install missing modules. After running main.py the program will install a chromium package if not present. it will do this only once. it won't downloader later when you run it. It is required by the requests_html package to simulate a html session, in simpler words, to browse the internet.
 
 ## Usage
 run the main.py file
