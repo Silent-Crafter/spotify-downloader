@@ -8,6 +8,7 @@ auth_manager = SpotifyClientCredentials(client_id='276dee1768a642e0ae15f34fc7fe6
 sp = Spotify(auth_manager=auth_manager)
 
 url = input('URL: ')
+folder = input('Path: ')
 
 maxRetry = 3
 
@@ -27,15 +28,15 @@ if 'open.spotify.com/playlist' in url:
     for track in tracks:                                #TAKES A HELL LOT OF TIME
         song = sp.track(track['track']['id'])
         title = create_title(song)
-        if not path.isfile(f'../{title}.mp3'):
+        if not path.isfile(f'{folder}/{title}.mp3'):
             print('\n-----------------------------------------------------------------------------------------------')
             print('\t\t\t\tSong:',song['name'])
             print('-----------------------------------------------------------------------------------------------\n')
             while True:
                 try:
                     link = search(song, 'n')
-                    download(title, link)
-                    set_meta(sp, song, title)
+                    download(folder, title, link)
+                    set_meta(sp, song, title, folder)
                 except:
                     if maxRetry < 1:
                         print('Retry limit reached. Breaking out of loop....')
@@ -55,18 +56,21 @@ if 'open.spotify.com/playlist' in url:
 
 elif 'open.spotify.com/track' in url:
     song = sp.track(url)
+    title = create_title(song)
     mode = input('Select method (n/t/a): ')
-    print('\n-----------------------------------------------------------------------------------------------')
-    print('\t\t\t\tSong:',song['name'])
-    print('-----------------------------------------------------------------------------------------------\n')
-    try:
-        title,link = search(song, mode)
-        download(title, link)
-        set_meta(sp, song, title)
-    except:
-        failed.append(song['name'])
-        print('FAILED')
-    print('\n-----------------------------------------------------------------------------------------------')
+    if not path.isfile(f'{folder}/{title}.mp3'):
+        print('\n-----------------------------------------------------------------------------------------------')
+        print('\t\t\t\tSong:',song['name'])
+        print('-----------------------------------------------------------------------------------------------\n')
+        try:
+            link = search(song, mode)
+            download(folder, title, link)
+            set_meta(sp, song, title, folder)
+        except:
+            print('FAILED')
+        print('\n-----------------------------------------------------------------------------------------------')
+    else:
+        print(f'{title} Already Downloaded')
 
 else:
     print('given url is not of a song on spotify')

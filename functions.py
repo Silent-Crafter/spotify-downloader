@@ -121,7 +121,7 @@ def search(song, mode):
             
         break                   #break out of while if program succeeds
 
-def download(title, url):
+def download(folder, title, url):
     ydl_opts = {
         'format': 'bestaudio/best',
         'postprocessors': [{
@@ -129,20 +129,20 @@ def download(title, url):
             'preferredcodec': 'mp3',
             'preferredquality': '192'
         }],
-        'outtmpl': '../{}.%(ext)s'.format(title)
+        'outtmpl': '{}/{}.%(ext)s'.format(folder,title)
     }
 
     print(ydl_opts['outtmpl'])
 
     with YoutubeDL(ydl_opts) as ydl:
         
-        if not os.path.isfile(f'../{title}.mp3'):
+        if not os.path.isfile(f'{folder}/{title}.mp3'):
             ydl.download([url])
         
         else:
             print('File already exists not downloading')
 
-def set_meta(sp, song, filename):
+def set_meta(sp, song, filename, folder):
     
     for disallowedChar in ['/', '?', '\\', '*', '|', '<', '>','\"',':']:
         if disallowedChar in filename:
@@ -151,9 +151,9 @@ def set_meta(sp, song, filename):
             else:
                 filename = filename.replace(disallowedChar, '')
 
-    path = f'../{filename}.mp3'
+    folder = f'{folder}/{filename}.mp3'
     print(filename)
-    print(os.path.isfile(path))
+    print(os.path.isfile(folder))
 
     maxRetry = 3
 
@@ -185,7 +185,7 @@ def set_meta(sp, song, filename):
             # ! we save tags as both ID3 v2.3 and v2.4
             # ! The simple ID3 tags
             try:
-                audioFile = EasyID3(path)
+                audioFile = EasyID3(folder)
             except:
                 audioFile = EasyID3()
 
@@ -226,10 +226,10 @@ def set_meta(sp, song, filename):
 
             # ! save as both ID3 v2.3 & v2.4 as v2.3 isn't fully features and
             # ! windows doesn't support v2.4 until later versions of Win10
-            audioFile.save(path,v2_version=3)
+            audioFile.save(folder,v2_version=3)
 
             # ! setting the album art
-            audioFile = ID3(path)
+            audioFile = ID3(folder)
             rawAlbumArt = urlopen(song['album']['images'][0]['url']).read()
             audioFile['APIC'] = AlbumCover(
                 encoding=3,
