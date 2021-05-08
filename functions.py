@@ -22,8 +22,6 @@ def get_song():
     #CODE
 '''
 
-exitFlag = False
-
 def get_plalist_tracks(sp: Spotify, url):
 
     results = sp.playlist_tracks(playlist_id=url)
@@ -50,6 +48,8 @@ def get_plalist_tracks(sp: Spotify, url):
 def search(song, mode):
 
     maxRetry = 3
+
+    exitFlag = False
 
     connection_errors = (ConnectionError, TimeoutError, requests.exceptions.ConnectionError, requests.exceptions.ConnectTimeout, requests.exceptions.HTTPError, errors.NetworkError, errors.TimeoutError)
 
@@ -157,6 +157,8 @@ def download(folder, title, url):
             print('File already exists not downloading')
 
 def set_meta(sp, song, filename, folder):
+
+    exitFlag = False
 
     for disallowedChar in ['/', '?', '\\', '*', '|', '<', '>','\"',':']:
         if disallowedChar in filename:
