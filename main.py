@@ -37,6 +37,10 @@ if 'open.spotify.com/playlist' in url:
                     link = search(song, 'n')
                     download(folder, title, link)
                     set_meta(sp, song, title, folder)
+
+                except (KeyboardInterrupt, SystemExit):
+                    exit()
+
                 except:
                     if maxRetry < 1:
                         print('Retry limit reached. Breaking out of loop....')
@@ -66,6 +70,8 @@ elif 'open.spotify.com/track' in url:
             link = search(song, mode)
             download(folder, title, link)
             set_meta(sp, song, title, folder)
+        except (KeyboardInterrupt, SystemExit):
+            exit()
         except:
             print('FAILED')
         print('\n-----------------------------------------------------------------------------------------------')

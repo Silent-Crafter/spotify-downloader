@@ -1,6 +1,6 @@
 from spotipy import Spotify
 from bs4 import BeautifulSoup
-from requests_html import HTMLSession 
+from requests_html import HTMLSession
 
 import os
 from sys import exc_info
@@ -19,8 +19,10 @@ import requests
 
 '''
 def get_song():
-    #CODE 
+    #CODE
 '''
+
+exitFlag = False
 
 def get_plalist_tracks(sp: Spotify, url):
 
@@ -65,7 +67,7 @@ def search(song, mode):
 
     url = f'https://www.youtube.com/results?search_query={query}'
 
-    while True:    
+    while True:
         try:
             #init an HTML session
             session = HTMLSession()
@@ -81,7 +83,7 @@ def search(song, mode):
 
             links = soup.find_all('a')
 
-            print('getting link')    
+            print('getting link')
             for link in links:
                 link = link.get('href')
                 try:
@@ -96,6 +98,9 @@ def search(song, mode):
                 except AttributeError:
                     continue
 
+                except (KeyboardInterrupt, SystemExit):
+                    exit()
+
         except connection_errors:
             session.close()
             if maxRetry < 1:
@@ -106,19 +111,28 @@ def search(song, mode):
                 maxRetry -= 1
                 continue
 
+        except KeyboardInterrupt:
+            print('quiting...')
+            session.close()
+            exitFlag = True
+            raise SystemExit
+
         except SystemExit:
+            break
             exit()
 
         except:
             session.close()
-            if maxRetry < 1:
+            if exitFlag == True:
+                exit()
+            elif maxRetry < 1:
                 print('Retry limit reached. Breaking out of loop....')
                 break
             else:
                 print('\nAn error occured. Trying again...\n')
                 maxRetry -= 1
                 continue
-            
+
         break                   #break out of while if program succeeds
 
 def download(folder, title, url):
@@ -135,15 +149,15 @@ def download(folder, title, url):
     print(ydl_opts['outtmpl'])
 
     with YoutubeDL(ydl_opts) as ydl:
-        
+
         if not os.path.isfile(f'{folder}/{title}.mp3'):
             ydl.download([url])
-        
+
         else:
             print('File already exists not downloading')
 
 def set_meta(sp, song, filename, folder):
-    
+
     for disallowedChar in ['/', '?', '\\', '*', '|', '<', '>','\"',':']:
         if disallowedChar in filename:
             if '\"' in filename:
@@ -240,9 +254,19 @@ def set_meta(sp, song, filename, folder):
             )
 
             audioFile.save(v2_version=3)
-        
+
+        except KeyboardInterrupt:
+            print('quiting...')
+            exitFlag = True
+            raise SystemExit
+
+        except SystemExit:
+            exit()
+
         except:
-            if maxRetry < 1:
+            if exitFlag == True:
+                exit()
+            elif maxRetry < 1:
                 print('Retry limit reached. Breaking out of loop....')
                 break
             else:
