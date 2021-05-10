@@ -1,11 +1,10 @@
 from spotipy import Spotify
-from bs4 import BeautifulSoup
-from requests_html import HTMLSession
 
 import os
 from sys import exc_info
 from youtube_dl import YoutubeDL
 from urllib.request import urlopen
+import re
 from pathlib import Path
 
 from mutagen.easyid3 import EasyID3, ID3
@@ -66,74 +65,12 @@ def search(song, mode):
     print(f'Search query: {query}')
 
     url = f'https://www.youtube.com/results?search_query={query}'
-
-    while True:
-        try:
-            #init an HTML session
-            session = HTMLSession()
-
-            # get the html content
-            response = session.get(url)
-
-            # execute Java-script
-            response.html.render(sleep=1)
-
-            # create bs object to parse HTML
-            soup = BeautifulSoup(response.html.html, "html.parser")
-
-            links = soup.find_all('a')
-
-            print('getting link')
-            for link in links:
-                link = link.get('href')
-                try:
-                    if(link.find('/watch') != -1):
-                        #asyncio.run(session.browser.disconnect())
-                        #asyncio.run(session.browser.close())
-                        session.close()
-                        link =  f'https://www.youtube.com{link}'
-                        return link
-                        exit()
-
-                except AttributeError:
-                    continue
-
-                except (KeyboardInterrupt, SystemExit):
-                    exit()
-
-        except connection_errors:
-            session.close()
-            if maxRetry < 1:
-                print('Retry limit reached. Breaking out of loop....')
-                break
-            else:
-                print('\nConnection Timed out. Trying again...\n')
-                maxRetry -= 1
-                continue
-
-        except KeyboardInterrupt:
-            print('quiting...')
-            session.close()
-            exitFlag = True
-            raise SystemExit
-
-        except SystemExit:
-            break
-            exit()
-
-        except:
-            session.close()
-            if exitFlag == True:
-                exit()
-            elif maxRetry < 1:
-                print('Retry limit reached. Breaking out of loop....')
-                break
-            else:
-                print('\nAn error occured. Trying again...\n')
-                maxRetry -= 1
-                continue
-
-        break                   #break out of while if program succeeds
+    
+    html = urlopen(url)
+    video_ids = re.findall(r"watch\?v=(\S{11})", html.read().decode())
+    link = "https://www.youtube.com/watch?v=" + video_ids[0]
+    
+    return link
 
 def download(folder, title, url):
     ydl_opts = {
