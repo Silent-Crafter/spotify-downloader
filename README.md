@@ -2,6 +2,11 @@
  downloads songs from spotify through youtube along with adding meta
 
 ## Setup
+
+install ffmpeg
+if you are on linux<br>
+```sudo apt install ffmpeg```<br>
+if you are on windows head over to <a href='https://www.gyan.dev/ffmpeg/builds/'>ffmpeg download</a>. scroll down till you find release. just click on one of the links and extract it. after doing this set the bin folder to the path.
 Run the setup.py to install missing modules. After running main.py the program will install a chromium package if not present. it will do this only once. it won't downloader later when you run it. It is required by the requests_html package to simulate a html session, in simpler words, to browse the internet.
 
 ## Usage
