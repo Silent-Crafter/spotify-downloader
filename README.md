@@ -11,7 +11,7 @@ for path, specify the path for the directory in this fashion:
 
 ``` C:\Music\Spotify```
 <br> OR
-<br> ``` /home/Music ``` (for linux) (i haven't tested it on linux yet)
+<br> ``` /home/Music ``` (for linux) (DONT USE ~ TO INDICATE HOME DIR)
 
 NOTE : Do not add a slash at the end of the directory as shown in the example
 
