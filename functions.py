@@ -12,46 +12,11 @@ from mutagen.easyid3 import EasyID3, ID3
 from mutagen.id3 import APIC as AlbumCover, USLT
 from mutagen.id3 import ID3, ID3NoHeaderError
 
-import asyncio
-
-from pyppeteer import errors
-import requests
-
-'''
-def get_song():
-    #CODE
-'''
-
-def get_plalist_tracks(sp: Spotify, url):
-
-    results = sp.playlist_tracks(playlist_id=url)
-
-    urls = []
-
-    tracks = results['items']
-
-    while results['next']:
-        results = sp.next(results)
-        tracks.extend(results['items'])
-
-    songs = []
-
-    print('appending songs')
-
-    for track in tracks:                                #TAKES A HELL LOT OF TIME
-        songs.append(sp.track(track['track']['id']))
-
-    print('songs appended')
-
-    return songs
-
 def search(song, mode):
 
     maxRetry = 3
 
     exitFlag = False
-
-    connection_errors = (ConnectionError, TimeoutError, requests.exceptions.ConnectionError, requests.exceptions.ConnectTimeout, requests.exceptions.HTTPError, errors.NetworkError, errors.TimeoutError)
 
     if mode == 'n':
         query = (song['name'] + ' ' + song['artists'][0]['name']).replace(' ','+')
@@ -210,6 +175,7 @@ def set_meta(sp, song, filename, folder):
                 exit()
             elif maxRetry < 1:
                 print('Retry limit reached. Breaking out of loop....')
+                print(exc_info())
                 break
             else:
                 print('\nAn error occured. Trying again...\n')
