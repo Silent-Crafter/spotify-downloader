@@ -4,6 +4,7 @@ import os
 from sys import exc_info
 from youtube_dl import YoutubeDL
 from urllib.request import urlopen
+from urllib.parse import quote
 import re
 from pathlib import Path
 
@@ -63,6 +64,8 @@ def search(song, mode):
         query = query.replace('&','%26')
 
     print(f'Search query: {query}')
+    
+    query = quote(query)
 
     url = f'https://www.youtube.com/results?search_query={query}'
     
