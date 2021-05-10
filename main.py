@@ -4,7 +4,7 @@ from os import path
 
 from functions import *
 
-auth_manager = SpotifyClientCredentials(client_id='',client_secret='')
+auth_manager = SpotifyClientCredentials(client_id='276dee1768a642e0ae15f34fc7fe6251',client_secret='f234a63aa0654f2b8304efe46275d6b1')
 sp = Spotify(auth_manager=auth_manager)
 
 url = input('URL: ')
