@@ -69,6 +69,8 @@ def set_meta(sp, song, filename, folder):
         if disallowedChar in filename:
             if '\"' in filename:
                 filename = filename.replace('\"','\'')
+            elif ':' in title:
+                title = title.replace(':','-')
             else:
                 filename = filename.replace(disallowedChar, '')
 
