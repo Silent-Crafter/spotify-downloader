@@ -2,11 +2,11 @@ import subprocess
 import sys
 
 def install(package):
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package,'--upgrade'])
 
 print('Checking Modules..')
 
-modules = ['spotipy', 'bs4', 'requests', 'requests_html', 'youtube_dl', 'urllib', 'mutagen', 'pyppeteer']
+modules = ['spotipy', 're', 'youtube_dl', 'urllib', 'mutagen']
 
 for module in modules:
     try:
