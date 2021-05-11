@@ -12,32 +12,32 @@ from mutagen.easyid3 import EasyID3, ID3
 from mutagen.id3 import APIC as AlbumCover, USLT
 from mutagen.id3 import ID3, ID3NoHeaderError
 
-def search(song, mode):
+def search(song, mode=t):
 
     maxRetry = 3
 
     exitFlag = False
 
-    if mode == 'n':
+    if mode == 'n' or mode == 'N':
         query = (song['name'] + ' ' + song['artists'][0]['name']).replace(' ','+')
-    elif mode =='t':
-        query = (song['name'] + ' ' + song['artists'][0]['name'] + ' - Topic').replace(' ','+')
-    elif mode == 'a':
+    elif mode =='t' or mode == 'T':
+        query = (song['name'] + ' ' + song['artists'][0]['name'] + ' \"Provided to YouTube\"').replace(' ','+')
+    elif mode == 'a' or mode == 'A':
         query = (song['name'] + ' ' + song['artists'][0]['name'] + ' (Official Audio)').replace(' ','+')
 
     if '&' in query:
         query = query.replace('&','%26')
 
     print(f'Search query: {query}')
-    
+
     query = quote(query)
 
     url = f'https://www.youtube.com/results?search_query={query}'
-    
+
     html = urlopen(url)
     video_ids = re.findall(r"watch\?v=(\S{11})", html.read().decode())
     link = "https://www.youtube.com/watch?v=" + video_ids[0]
-    
+
     return link
 
 def download(folder, title, url):
