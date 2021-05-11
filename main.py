@@ -25,7 +25,7 @@ if 'open.spotify.com/playlist' in url:
         results = sp.next(results)
         tracks.extend(results['items'])
 
-    for track in tracks:                                #TAKES A HELL LOT OF TIME
+    for track in tracks:
         song = sp.track(track['track']['id'])
         title = create_title(song)
         if not path.isfile(f'{folder}/{title}.mp3'):
@@ -34,7 +34,7 @@ if 'open.spotify.com/playlist' in url:
             print('-----------------------------------------------------------------------------------------------\n')
             while True:
                 try:
-                    link = search(song, 'n')
+                    link = search(song, 't')
                     download(folder, title, link)
                     set_meta(sp, song, title, folder)
 
@@ -61,17 +61,19 @@ if 'open.spotify.com/playlist' in url:
 elif 'open.spotify.com/track' in url:
     song = sp.track(url)
     title = create_title(song)
-    mode = input('Select method (n/t/a): ')
+    mode = input('Select method (n/T/a): ')
     if not path.isfile(f'{folder}/{title}.mp3'):
         print('\n-----------------------------------------------------------------------------------------------')
         print('\t\t\t\tSong:',song['name'])
         print('-----------------------------------------------------------------------------------------------\n')
         try:
-            link = search(song, mode)
+            link = search(song, mode.strip())
             download(folder, title, link)
             set_meta(sp, song, title, folder)
+
         except (KeyboardInterrupt, SystemExit):
             exit()
+
         except:
             print('FAILED')
         print('\n-----------------------------------------------------------------------------------------------')
@@ -79,4 +81,4 @@ elif 'open.spotify.com/track' in url:
         print(f'{title} Already Downloaded')
 
 else:
-    print('given url is not of a song on spotify')
+    print('Given url is not of a song on spotify')
