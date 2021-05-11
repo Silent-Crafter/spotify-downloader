@@ -17,29 +17,57 @@ def search(song, mode='t'):
     if mode == '':
         mode = 't'
 
+    specialChars = {
+        '%21': '!',
+        '%22': '\"',
+        '%23': '#',
+        '%24': '$',
+        '%25': '%',
+        '%26': '&',
+        '%27': '\'',
+        '%28': '(',
+        '%29': ')',
+        '%2A': '*',
+        '%2B': '+',
+        '%2C': ',',
+        '%2D': '-',
+        '%2E': '.'
+    }
+
     maxRetry = 3
 
     exitFlag = False
 
     if mode == 'n' or mode == 'N':
-        query = (song['name'] + ' ' + song['artists'][0]['name']).replace(' ','+')
+        query = str(song['name'] + ' ' + song['artists'][0]['name']).replace(' ','+')
     elif mode =='t' or mode == 'T':
-        query = (song['name'] + ' ' + song['artists'][0]['name'] + ' \"Provided to YouTube\"').replace(' ','+')
+        query = str(song['name'] + ' ' + song['artists'][0]['name'] + ' \"Provided to YouTube\"').replace(' ','+')
     elif mode == 'a' or mode == 'A':
-        query = (song['name'] + ' ' + song['artists'][0]['name'] + ' (Official Audio)').replace(' ','+')
+        query = str(song['name'] + ' ' + song['artists'][0]['name'] + ' (Official Audio)').replace(' ','+')
 
     if '&' in query:
         query = query.replace('&','%26')
 
-    print(f'Search query: {query}')
+    print(f'Search query: {query}','\n')
 
     query = quote(query)
 
+    for specialChar in specialChars:
+        if specialChar in query:
+            query = query.replace(specialChar, specialChars[specialChar])
+
+    #print('converted query: ',query,'\n')
+
     url = f'https://www.youtube.com/results?search_query={query}'
 
-    html = urlopen(url)
-    video_ids = re.findall(r"watch\?v=(\S{11})", html.read().decode())
-    link = "https://www.youtube.com/watch?v=" + video_ids[0]
+    try:    
+        html = urlopen(url)
+        video_ids = re.findall(r"watch\?v=(\S{11})", html.read().decode())
+        link = "https://www.youtube.com/watch?v=" + video_ids[0]
+    except IndexError:
+        print('\nTry with different mode\n')
+    except Exception as e:
+        print(e)
 
     return link
 

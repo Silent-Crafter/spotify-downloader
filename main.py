@@ -20,6 +20,8 @@ if 'open.spotify.com/playlist' in url:
     urls = []
 
     tracks = results['items']
+    
+    mode = input('Select method (n/T/a): ')
 
     while results['next']:
         results = sp.next(results)
@@ -34,7 +36,7 @@ if 'open.spotify.com/playlist' in url:
             print('-----------------------------------------------------------------------------------------------\n')
             while True:
                 try:
-                    link = search(song, 't')
+                    link = search(song, mode.strip())
                     download(folder, title, link)
                     set_meta(sp, song, title, folder)
 
