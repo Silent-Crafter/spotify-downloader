@@ -12,7 +12,10 @@ from mutagen.easyid3 import EasyID3, ID3
 from mutagen.id3 import APIC as AlbumCover, USLT
 from mutagen.id3 import ID3, ID3NoHeaderError
 
-def search(song, mode=t):
+def search(song, mode='t'):
+
+    if mode == '':
+        mode = 't'
 
     maxRetry = 3
 
