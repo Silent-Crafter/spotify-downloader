@@ -43,13 +43,13 @@ if 'open.spotify.com/playlist' in url:
                 except (KeyboardInterrupt, SystemExit):
                     exit()
 
-                except:
+                except Exception as e:
                     if maxRetry < 1:
                         print('Retry limit reached. Breaking out of loop....')
                         failed.append(song['name'])
                         break
                     else:
-                        print('\nConnection Timed out. Trying again...\n')
+                        print(e)
                         maxRetry -= 1
                         continue
                 break
@@ -82,5 +82,49 @@ elif 'open.spotify.com/track' in url:
     else:
         print(f'{title} Already Downloaded')
 
+elif 'open.spotify.com/album' in url:
+    album = sp.album_tracks(url)
+
+    tracks = album['items']
+    
+    mode = input('Select method (n/T/a): ')
+
+    while album['next']:
+        album = sp.next(album)
+        tracks.extend(album['items'])
+
+    for track in tracks:
+        song = sp.track(track['id'])
+        title = create_title(song)
+        if not path.isfile(f'{folder}/{title}.mp3'):
+            print('\n-----------------------------------------------------------------------------------------------')
+            print('\t\t\t\tSong:',song['name'])
+            print('-----------------------------------------------------------------------------------------------\n')
+            while True:
+                try:
+                    link = search(song, mode.strip())
+                    download(folder, title, link)
+                    set_meta(sp, song, title, folder)
+
+                except (KeyboardInterrupt, SystemExit):
+                    exit()
+
+                except Exception as e:
+                    if maxRetry < 1:
+                        print('Retry limit reached. Breaking out of loop....')
+                        failed.append(song['name'])
+                        break
+                    else:
+                        print(e)
+                        maxRetry -= 1
+                        continue
+                break
+            print('\n-----------------------------------------------------------------------------------------------')
+        else:
+            print(title)
+
+    print('songs downloaded')
+    print('failed:',failed)
+
 else:
-    print('Given url is not of a song on spotify')
+    print('Given url is not of a song or playlist on spotify')

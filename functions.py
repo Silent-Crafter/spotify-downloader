@@ -64,14 +64,17 @@ def search(song, mode='t'):
         html = urlopen(url)
         video_ids = re.findall(r"watch\?v=(\S{11})", html.read().decode())
         link = "https://www.youtube.com/watch?v=" + video_ids[0]
+
     except IndexError:
         print('\nTry with different mode\n')
+
     except Exception as e:
         print(e)
 
     return link
 
 def download(folder, title, url):
+    
     ydl_opts = {
         'format': 'bestaudio/best',
         'postprocessors': [{
