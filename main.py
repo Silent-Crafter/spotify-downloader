@@ -4,7 +4,8 @@ from os import path
 
 from functions import *
 
-auth_manager = SpotifyClientCredentials(client_id='276dee1768a642e0ae15f34fc7fe6251',client_secret='f234a63aa0654f2b8304efe46275d6b1')
+auth_manager = SpotifyClientCredentials(client_id='276dee1768a642e0ae15f34fc7fe6251',
+                                        client_secret='f234a63aa0654f2b8304efe46275d6b1')
 sp = Spotify(auth_manager=auth_manager)
 
 url = input('URL: ')
@@ -15,12 +16,12 @@ maxRetry = 3
 failed = []
 
 if 'open.spotify.com/playlist' in url:
-    results = sp.playlist_tracks(playlist_id=url)
+    results = sp.playlist_items(playlist_id=url)
 
     urls = []
 
     tracks = results['items']
-    
+
     mode = input('Select method (n/T/a): ')
 
     while results['next']:
@@ -32,7 +33,7 @@ if 'open.spotify.com/playlist' in url:
         title = create_title(song)
         if not path.isfile(f'{folder}/{title}.mp3'):
             print('\n-----------------------------------------------------------------------------------------------')
-            print('\t\t\t\tSong:',song['name'])
+            print('\t\t\t\tSong:', song['name'])
             print('-----------------------------------------------------------------------------------------------\n')
             while True:
                 try:
@@ -58,7 +59,7 @@ if 'open.spotify.com/playlist' in url:
             print(title)
 
     print('songs downloaded')
-    print('failed:',failed)
+    print('failed:', failed)
 
 elif 'open.spotify.com/track' in url:
     song = sp.track(url)
@@ -66,7 +67,7 @@ elif 'open.spotify.com/track' in url:
     mode = input('Select method (n/T/a): ')
     if not path.isfile(f'{folder}/{title}.mp3'):
         print('\n-----------------------------------------------------------------------------------------------')
-        print('\t\t\t\tSong:',song['name'])
+        print('\t\t\t\tSong:', song['name'])
         print('-----------------------------------------------------------------------------------------------\n')
         try:
             link = search(song, mode.strip())
@@ -86,7 +87,7 @@ elif 'open.spotify.com/album' in url:
     album = sp.album_tracks(url)
 
     tracks = album['items']
-    
+
     mode = input('Select method (n/T/a): ')
 
     while album['next']:
@@ -98,7 +99,7 @@ elif 'open.spotify.com/album' in url:
         title = create_title(song)
         if not path.isfile(f'{folder}/{title}.mp3'):
             print('\n-----------------------------------------------------------------------------------------------')
-            print('\t\t\t\tSong:',song['name'])
+            print('\t\t\t\tSong:', song['name'])
             print('-----------------------------------------------------------------------------------------------\n')
             while True:
                 try:
@@ -124,7 +125,7 @@ elif 'open.spotify.com/album' in url:
             print(title)
 
     print('songs downloaded')
-    print('failed:',failed)
+    print('failed:', failed)
 
 else:
     print('Given url is not of a song or playlist on spotify')
