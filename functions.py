@@ -1,21 +1,18 @@
-from spotipy import Spotify
-
 import os
 from sys import exc_info
 from youtube_dl import YoutubeDL
 from urllib.request import urlopen
 from urllib.parse import quote
 import re
-from pathlib import Path
 
-from mutagen.easyid3 import EasyID3, ID3
-from mutagen.id3 import APIC as AlbumCover, USLT
-from mutagen.id3 import ID3, ID3NoHeaderError
+from mutagen.easyid3 import EasyID3
+from mutagen.id3 import APIC as AlbumCover
+from mutagen.id3 import ID3
 
-def search(song, mode='t'):
 
-    if mode == '':
-        mode = 't'
+def search(song, mode='t') -> str:
+
+    link = ''
 
     specialChars = {
         '%21': '!',
@@ -34,21 +31,19 @@ def search(song, mode='t'):
         '%2E': '.'
     }
 
-    maxRetry = 3
-
-    exitFlag = False
-
     if mode == 'n' or mode == 'N':
-        query = str(song['name'] + ' ' + song['artists'][0]['name']).replace(' ','+')
-    elif mode =='t' or mode == 'T':
-        query = str(song['name'] + ' ' + song['artists'][0]['name'] + ' \"Provided to YouTube\"').replace(' ','+')
+        query = str(song['name'] + ' ' + song['artists'][0]['name']).replace(' ', '+')
+    elif mode == 't' or mode == 'T':
+        query = str(song['name'] + ' ' + song['artists'][0]['name'] + ' \"Provided to YouTube\"').replace(' ', '+')
     elif mode == 'a' or mode == 'A':
-        query = str(song['name'] + ' ' + song['artists'][0]['name'] + ' (Official Audio)').replace(' ','+')
+        query = str(song['name'] + ' ' + song['artists'][0]['name'] + ' (Official Audio)').replace(' ', '+')
+    else:
+        query = str(song['name'] + ' ' + song['artists'][0]['name'] + ' \"Provided to YouTube\"').replace(' ', '+')
 
     if '&' in query:
-        query = query.replace('&','%26')
+        query = query.replace('&', '%26')
 
-    print(f'Search query: {query}','\n')
+    print(f'Search query: {query}', '\n')
 
     query = quote(query)
 
@@ -56,13 +51,13 @@ def search(song, mode='t'):
         if specialChar in query:
             query = query.replace(specialChar, specialChars[specialChar])
 
-    #print('converted query: ',query,'\n')
+    # print('converted query: ',query,'\n')
 
     url = f'https://www.youtube.com/results?search_query={query}'
 
-    try:    
+    try:
         html = urlopen(url)
-        video_ids = re.findall(r"watch\?v=(\S{11})", html.read().decode())
+        video_ids = re.findall(r'watch\?v=(\S{11})', html.read().decode())
         link = "https://www.youtube.com/watch?v=" + video_ids[0]
 
     except IndexError:
@@ -73,8 +68,9 @@ def search(song, mode='t'):
 
     return link
 
+
 def download(folder, title, url):
-    
+
     ydl_opts = {
         'format': 'bestaudio/best',
         'postprocessors': [{
@@ -82,35 +78,34 @@ def download(folder, title, url):
             'preferredcodec': 'mp3',
             'preferredquality': '192'
         }],
-        'outtmpl': '{}/{}.%(ext)s'.format(folder,title)
+        'outtmpl': '{}/{}.%(ext)s'.format(folder, title)
     }
 
-    print('Output file:',ydl_opts['outtmpl'])
+    print('Output file:', ydl_opts['outtmpl'])
 
     with YoutubeDL(ydl_opts) as ydl:
-
         if not os.path.isfile(f'{folder}/{title}.mp3'):
             ydl.download([url])
-
         else:
             print('File already exists not downloading')
+
 
 def set_meta(sp, song, filename, folder):
 
     exitFlag = False
 
-    for disallowedChar in ['/', '?', '\\', '*', '|', '<', '>','\"',':']:
+    for disallowedChar in ['/', '?', '\\', '*', '|', '<', '>', '\"', ':']:
         if disallowedChar in filename:
             if '\"' in filename:
-                filename = filename.replace('\"','\'')
-            elif ':' in title:
-                title = title.replace(':','-')
+                filename = filename.replace('\"', '\'')
+            elif ':' in filename:
+                filename = filename.replace(':', '-')
             else:
                 filename = filename.replace(disallowedChar, '')
 
     folder = f'{folder}/{filename}.mp3'
-    print('\nFilename:',filename)
-    print('File exists:',os.path.isfile(folder))
+    print('\nFilename:', filename)
+    print('File exists:', os.path.isfile(folder))
 
     maxRetry = 3
 
@@ -130,8 +125,6 @@ def set_meta(sp, song, filename, folder):
             contributingArtists = []
             for artist in song['artists']:
                 contributingArtists.append(artist['name'])
-
-            duration = round(song['duration_ms'] / 1000, ndigits=3)
 
             trackNumber = song['track_number']
 
@@ -167,7 +160,7 @@ def set_meta(sp, song, filename, folder):
             audioFile['artist'] = contributingArtists
 
             # album name
-            audioFile['album'] = song['album']['name']
+            audioFile['album'] = albumName
 
             # album artist (all of 'em)
             albumArtists = []
@@ -183,7 +176,7 @@ def set_meta(sp, song, filename, folder):
 
             # save as both ID3 v2.3 & v2.4 as v2.3 isn't fully features and
             # windows doesn't support v2.4 until later versions of Win10
-            audioFile.save(folder,v2_version=3)
+            audioFile.save(folder, v2_version=3)
 
             # setting the album art
             audioFile = ID3(folder)
@@ -201,20 +194,17 @@ def set_meta(sp, song, filename, folder):
         except KeyboardInterrupt:
             print('quiting...')
             exitFlag = True
-            raise SystemExit
+            raise Exception
 
-        except SystemExit:
-            exit()
-
-        except:
-            if exitFlag == True:
+        except Exception:
+            if exitFlag:
                 exit()
             elif maxRetry < 1:
                 print('Retry limit reached. Breaking out of loop....')
                 print(exc_info())
                 break
             else:
-                print('\nAn error occured. Trying again...\n')
+                print('\nAn error occurred. Trying again...\n')
                 maxRetry -= 1
                 continue
 
@@ -222,19 +212,19 @@ def set_meta(sp, song, filename, folder):
 
     print('done')
 
-def create_title(song):
 
+def create_title(song) -> str:
     if len(song['artists']) > 1:
         title = song['name'] + ' - ' + song['artists'][0]['name'] + ', ' + song['artists'][1]['name']
     else:
         title = song['name'] + ' - ' + song['artists'][0]['name']
 
-    for disallowedChar in ['/', '?', '\\', '*', '|', '<', '>','\"',':']:
+    for disallowedChar in ['/', '?', '\\', '*', '|', '<', '>', '\"', ':']:
         if disallowedChar in title:
             if '\"' in title:
-                title = title.replace('\"','\'')
+                title = title.replace('\"', '\'')
             elif ':' in title:
-                title = title.replace(':','-')
+                title = title.replace(':', '-')
             else:
                 title = title.replace(disallowedChar, '')
 
