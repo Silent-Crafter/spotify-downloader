@@ -1,9 +1,10 @@
 import os
 from sys import exc_info
-from youtube_dl import YoutubeDL
+# from youtube_dl import YoutubeDL
 from urllib.request import urlopen
 from urllib.parse import quote
 import re
+from yt_dlp import YoutubeDL
 
 from mutagen.easyid3 import EasyID3
 from mutagen.id3 import APIC as AlbumCover
