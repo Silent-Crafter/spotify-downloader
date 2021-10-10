@@ -138,7 +138,8 @@ def set_meta(sp, song, filename, folder):
             # The simple ID3 tags
             try:
                 audioFile = EasyID3(folder)
-            except:
+
+            except Exception:
                 audioFile = EasyID3()
 
             # song name
