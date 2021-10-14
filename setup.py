@@ -6,7 +6,7 @@ def install(package):
 
 print('Checking Modules..')
 
-modules = ['spotipy', 're', 'youtube_dl', 'urllib', 'mutagen']
+modules = ['spotipy', 're', 'yt-dlp', 'urllib', 'mutagen']
 
 for module in modules:
     try:
