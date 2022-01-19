@@ -3,16 +3,14 @@ from spotipy import Spotify
 from spotipy.oauth2 import SpotifyClientCredentials
 from os import path
 from re import findall
-from sys import argv
-
+import sys
 from functions import *
-
 auth_manager = SpotifyClientCredentials(client_id='276dee1768a642e0ae15f34fc7fe6251',
                                         client_secret='f234a63aa0654f2b8304efe46275d6b1')
 sp = Spotify(auth_manager=auth_manager)
 
-if (len(argv) > 1):
-    url = argv[1]
+if (len(sys.argv) > 1):
+    url = sys.argv[1]
 else:
     url = input('URL: ')
 
@@ -211,6 +209,5 @@ elif 'open.spotify.com/album' in url:
         for failure in failed:
             print('\t'+failure+'\n')
         print(']')
-
 else:
     print('Given url is not of a song or playlist on spotify')
