@@ -7,10 +7,13 @@ install ffmpeg
 if you are on linux<br>
 ```sudo apt install ffmpeg```<br>
 if you are on windows head over to <a href='https://www.gyan.dev/ffmpeg/builds/'>ffmpeg download</a>. scroll down till you find "release". just click on one of the links and extract it. after doing this set the bin folder of ffmpeg to the path.<br>
-Run the setup.py to install missing modules.
+
+then run 
+```python3 -m pip install -e spotify-downloader```
 
 ## Usage
-run the main.py file
+run `spotify_downloader [url]` for linux
+windows users need to add `.exe` after `spotify-downloader`. i.e. `spotify_downloader.exe [url]`.
 input the asked values
 for path, specify the path for the directory in this fashion:
 
@@ -19,6 +22,8 @@ for path, specify the path for the directory in this fashion:
 <br> ``` /home/username/Music ``` (for linux) (DONT USE ~ TO INDICATE HOME DIR)
 
 **NOTE : Do not add a slash at the end of the directory as shown in the example**
+
+you can also use spotify_downloader as a python module by importing it into your scripts. (Docstrings coming soon for help)
 
 ### modes
 the program will ask you for mode/method.<br>

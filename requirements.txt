@@ -1,0 +1,5 @@
+setuptools
+requests
+spotipy
+mutagen
+yt-dlp
