@@ -4,12 +4,17 @@
 ## Setup
 
 install ffmpeg
-if you are on linux<br>
-```sudo apt install ffmpeg```<br>
+if you are on linux
+```
+sudo apt install ffmpeg
+```
+<br>
 if you are on windows head over to <a href='https://www.gyan.dev/ffmpeg/builds/'>ffmpeg download</a>. scroll down till you find "release". just click on one of the links and extract it. after doing this set the bin folder of ffmpeg to the path.<br>
 
-then run 
-```python3 -m pip install -e spotify-downloader```
+then run
+```
+python3 -m pip install -e spotify-downloader
+```
 
 ## Usage
 run `spotify_downloader [url]` for linux
@@ -34,3 +39,8 @@ the program will ask you for mode/method.<br>
 - __a__ : audio mode/method. add (Official Audio) to further enhance the search term for youtube. serves the same purpose as t mode. <br><br>
 
 Recommended is the topic mode. it works for must of the time. but in case if it dosen't use n or a respectively.
+
+## TODO
+
+- [ ] Doctrings
+- [ ] parallel downloading
