@@ -1,7 +1,7 @@
 from requests import get
 from re import findall
 from spotipy import Spotify
-
+from sys import exit
 
 class SongObject:
 
