@@ -18,6 +18,10 @@ class SongObject:
 
     def get_tracks(self, url):
 
+        if not findall(r'open.spotify.com/[a-z]*/.{22}', url):
+            print('Not a valid spotify song url.. quiting..')
+            exit(1)
+
         if 'track' in url:
             return [self.get_track(url)]
         elif 'playlist' in url:
@@ -26,8 +30,9 @@ class SongObject:
             return self.get_artist(url)
         elif 'album' in url:
             return self.get_album(url)
-        else:
-            pass
+        elif 'show' or 'episode':
+            print('Podcast urls aren\'t yet supported.. quiting...')
+            exit(1)
 
     def get_track(self, url):
         return self.spobj.track(url)
