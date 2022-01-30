@@ -2,7 +2,7 @@
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyClientCredentials
 from os import path
-from sys import argv
+from sys import argv,exit
 
 from spotify_downloader.search.song import SongObject
 from spotify_downloader.download.downloader import download
@@ -27,7 +27,12 @@ def console():
 
     songobj = SongObject(sp, mode)
 
-    tracks = songobj.get_tracks(url)
+    try:
+        tracks = songobj.get_tracks(url)
+    # every exception sir? EVERYONE
+    except Exception:
+        print('\nError 404: Not Found')
+        exit(1)
 
     failed = []
     max_retry = 3
