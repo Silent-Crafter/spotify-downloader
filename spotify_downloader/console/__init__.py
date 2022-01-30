@@ -20,7 +20,10 @@ def console():
         url = input('URL: ')
 
     folder = input('Path: ').strip()
-    mode = input('mode: ').strip()
+    mode = input('mode(T/n/a): ').strip()
+    
+    if not folder:
+        folder = '.'
 
     songobj = SongObject(sp, mode)
 
