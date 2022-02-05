@@ -40,11 +40,21 @@ class SongObject:
     def get_playlist(self, url):
         results = self.spobj.playlist_items(playlist_id=url)
 
-        tracks = results['items']
+        _tracks = results['items']
 
         while results['next']:
             results = self.spobj.next(results)
-            tracks.extend(results['items'])
+            _tracks.extend(results['items'])
+
+        # for some weird reason, spotify returns some addiotinal information if used the playlist_tracks method
+        # whose dictionary structure is different if used Spotify.album_tracks() or Spotify.track() functions.
+        # we need the 'track' key to get the actual track information
+
+        tracks = []
+
+        for i in range(len(_tracks)):
+            tracks.append(_tracks[0]['track'])
+            _tracks.pop(0)
 
         return tracks
 

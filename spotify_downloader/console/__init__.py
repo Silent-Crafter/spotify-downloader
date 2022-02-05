@@ -39,7 +39,7 @@ def console():
 
     for track in tracks:
         try:
-            song = sp.track(track['id'])
+            song = songobj.get_track(track["external_urls"]["spotify"])
         except TypeError:
             continue
 
