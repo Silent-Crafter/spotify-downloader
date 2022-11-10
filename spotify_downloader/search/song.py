@@ -146,24 +146,46 @@ class SongObject:
         }
 
         if self.mode == 'n' or self.mode == 'N':
-            query = str(
-                song['name'] + ' ' + song['artists'][0]['name']
-            ).replace(' ', '+')
+            if (len(song['artists']) > 1):
+                query = str(
+                        song['name'] + ' ' + song['artists'][0]['name'] + ' ' + song['artists'][1]['name']
+                ).replace(' ', '+')
+
+            else:
+                query = str(
+                    song['name'] + ' ' + song['artists'][0]['name']
+                ).replace(' ', '+')
 
         elif self.mode == 't' or self.mode == 'T':
-            query = str(
-                song['name'] + ' ' + song['artists'][0]['name'] + ' \"Provided to YouTube\"'
-            ).replace(' ', '+')
+            if (len(song['artists']) > 1):
+                query = str(
+                    song['name'] + ' ' + song['artists'][0]['name'] + ' ' + song['artists'][1]['name'] + ' \"Provided to YouTube\"'
+                ).replace(' ', '+')
+
+            else:
+                query = str(
+                    song['name'] + ' ' + song['artists'][0]['name'] + ' \"Provided to YouTube\"'
+                ).replace(' ', '+')
 
         elif self.mode == 'a' or self.mode == 'A':
-            query = str(
-                song['name'] + ' ' + song['artists'][0]['name'] + ' (Official Audio)'
-            ).replace(' ', '+')
+            if (len(song['artists']) > 1):
+                query = str(
+                    song['name'] + ' ' + song['artists'][0]['name'] + ' ' + song['artists'][1]['name'] + ' (Official Audio)'
+                ).replace(' ', '+')
+            else:
+                query = str(
+                    song['name'] + ' ' + song['artists'][0]['name'] + ' (Official Audio)'
+                ).replace(' ', '+')
 
         else:
-            query = str(
-                song['name'] + ' ' + song['artists'][0]['name'] + ' \"Provided to YouTube\"'
-            ).replace(' ', '+')
+            if (len(song['artists']) > 1):
+                query = str(
+                    song['name'] + ' ' + song['artists'][0]['name'] + ' ' + song['artists'][1]['name'] + ' \"Provided to YouTube\"'
+                ).replace(' ', '+')
+            else:
+                query = str(
+                    song['name'] + ' ' + song['artists'][0]['name'] + ' \"Provided to YouTube\"'
+                ).replace(' ', '+')
 
         print(f'Search query: {query}', '\n')
 
