@@ -14,7 +14,8 @@ if you are on windows head over to <a href='https://www.gyan.dev/ffmpeg/builds/'
 then run
 ```
 git clone https://https://github.com/Silent-Crafter/spotify-downloader
-python3 -m pip install -e spotify-downloader
+cd spotify-downloader
+pip install .
 ```
 
 ## Usage
