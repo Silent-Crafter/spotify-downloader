@@ -8,8 +8,6 @@ if you are on linux
 ```
 sudo apt install ffmpeg
 ```
-<br>
-if you are on windows head over to <a href='https://www.gyan.dev/ffmpeg/builds/'>ffmpeg download</a>. scroll down till you find "release". just click on one of the links and extract it. after doing this set the bin folder of ffmpeg to the path.<br>
 
 then run
 ```
@@ -17,6 +15,8 @@ git clone https://https://github.com/Silent-Crafter/spotify-downloader
 cd spotify-downloader
 pip install .
 ```
+<br>
+if you are on windows, after extracting the release to a permanent convinient location eg. C:\ , and add the location of extracted zip file to <a href="https://linuxhint.com/add-directory-to-path-environment-variables-windows/">path</a>.<br>
 
 ## Usage
 run `spotify_downloader [url]` for linux
