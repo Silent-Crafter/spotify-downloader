@@ -1,5 +1,7 @@
 # spotify downloader
  downloads songs from spotify by searching them on youtube along with adding meta
+ 
+ **NOTE**:  If this projects seems ded ie. no commits for months, years, it is not. it's just working without any issues and you should probably ignore the to do list below
 
 ## Setup
 
