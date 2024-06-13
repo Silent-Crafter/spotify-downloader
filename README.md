@@ -1,27 +1,53 @@
+> 13 June 2024 Status Update: **WORKING**
+
 # spotify downloader
  downloads songs from spotify by searching them on youtube along with adding meta
  
  **NOTE**:  If this projects seems ded ie. no commits for months, years, it is not. it's just working without any issues and you should probably ignore the to do list below
 
-## Setup
+## Installation
 
 install ffmpeg
 if you are on linux
 ```
 sudo apt install ffmpeg
 ```
+1. Fork/Clone/Download this repo
 
-then run
 ```
-git clone https://https://github.com/Silent-Crafter/spotify-downloader
-cd spotify-downloader
+git clone https://github.com/Datalux/Osintgram.git
+```
+
+2. Navigate to the directory
+
+```
+cd Osintgram
+```
+
+3. Create a virtual environment for this project
+
+```
+python3 -m venv venv
+```
+
+4. Load the virtual environment
+- On Windows Powershell: `.\venv\Scripts\activate.ps1`
+- On Linux and Git Bash: `source venv/bin/activate`
+
+5. Run
+```
 pip install .
 ```
+
 <br>
-if you are on windows, after extracting the release to a permanent convinient location eg. C:\ , and add the location of extracted zip file to <a href="https://linuxhint.com/add-directory-to-path-environment-variables-windows/">path</a>.<br>
+
+**OR**
+
+<br>
+if you are on windows, download and extract the zip from the Releases page to a convinient location eg. C:\ , and add the location of extracted zip file to <a href="https://linuxhint.com/add-directory-to-path-environment-variables-windows/">path</a>.<br>
 
 ## Usage
-run `spotify_downloader [url]` for linux
+run `python3 spotify_downloader [url]` for linux (from the same github directory)
 windows users need to add `.exe` after `spotify-downloader`. i.e. `spotify_downloader.exe [url]`.
 input the asked values
 for path, specify the path for the directory in this fashion:
