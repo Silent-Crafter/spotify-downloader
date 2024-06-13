@@ -47,6 +47,9 @@ pip install .
 if you are on windows, download and extract the zip from the Releases page to a convinient location eg. C:\ , and add the location of extracted zip file to <a href="https://linuxhint.com/add-directory-to-path-environment-variables-windows/">path</a>.<br>
 
 ## Usage
+
+**NOTE**: Any personalized spotify playlists like daily mix or artist mix will not work. You will have to fork the repo and modify the code to provide your cookies
+
 run `python3 spotify_downloader [url]` for linux (from the same github directory)
 windows users need to add `.exe` after `spotify-downloader`. i.e. `spotify_downloader.exe [url]`.
 input the asked values
