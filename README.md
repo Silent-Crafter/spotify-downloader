@@ -15,13 +15,13 @@ sudo apt install ffmpeg
 1. Fork/Clone/Download this repo
 
 ```
-git clone https://github.com/Datalux/Osintgram.git
+https://github.com/Silent-Crafter/spotify-downloader
 ```
 
 2. Navigate to the directory
 
 ```
-cd Osintgram
+cd spotify-downloader
 ```
 
 3. Create a virtual environment for this project
