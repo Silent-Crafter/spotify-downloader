@@ -1,4 +1,4 @@
-> 13 June 2024 Status Update: **WORKING**
+> 9 February 2025 Status Update: **WORKING**
 
 # spotify downloader
  downloads songs from spotify by searching them on youtube along with adding meta
